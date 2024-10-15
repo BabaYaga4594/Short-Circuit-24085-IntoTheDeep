@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class RobotHardwareFinal {
-    // Later uses
+    // Later uses for this
     // Mecanum Drive
     DcMotor frontLeft;
     DcMotor frontRight;
