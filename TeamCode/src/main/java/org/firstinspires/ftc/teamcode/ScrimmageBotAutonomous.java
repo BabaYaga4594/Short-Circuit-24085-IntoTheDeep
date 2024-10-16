@@ -11,7 +11,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class ScrimmageBotAutonomous extends OpMode {
 
     // change the numbers for the encoders per wheel rev. and encoders per inch
+    // dont need first
     final double encodersPerWheelRevolutionn = 0;
+
+    final double wheelRevolutionsPerEncoders = 0;
     final double inchesPerWheelRevolution = 12.8632;
     final double encodersPerInch = 0;
 
