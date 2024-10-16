@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 @Autonomous(name = "ScrimBotAutoBlueBasket")
-public class ScrimBotAutoBlueBasket extends OpMode {
+public class ScrimBotAutoBasketSide extends OpMode {
 
     ScrimBotAutoMethods auto = new ScrimBotAutoMethods();
 
@@ -22,11 +22,23 @@ public class ScrimBotAutoBlueBasket extends OpMode {
     @Override
     public void init() {
         auto.resetEncoders();
-
+        auto.init(hardwareMap);
     }
 
     @Override
     public void loop() {
+
+        /*methods usable for later
+        reset encoders
+        stop motors
+        set motor powers
+        drive (forward or reverse)
+        strafe (left or right)
+        set target position
+        move arm slide
+        run intake
+        move arm motor
+         */
 
         // 1. Drive forward to the high rung and release the preloaded sample
         auto.drive(forwardToHighRung, "FORWARD");
@@ -34,7 +46,7 @@ public class ScrimBotAutoBlueBasket extends OpMode {
 
         // Repeat steps 2-8 for the remaining two yellow blocks
 
-        // 2. Drive backward slightly
+        // 2. Drive backwards slightly
         //driveBackward(backwardDistance);
 
         // 3. Turn 90 degrees left
@@ -47,7 +59,7 @@ public class ScrimBotAutoBlueBasket extends OpMode {
         //strafeLeft(strafeLeftToPickup);
 
         // 6. Turn 90 degrees right
-        //turnRight(turnRight90);
+        // turnRight(turnRight90);
 
         // 7. Pick up the yellow block
         //pickUpBlock();
@@ -58,6 +70,8 @@ public class ScrimBotAutoBlueBasket extends OpMode {
         // 9. Extend the arm and score the block on the high rung
         //extendArm(armExtendDistance);
         //scoreBlock();
+
+        auto.stopMotors();
 
     }
     // Later

@@ -175,7 +175,7 @@ public class ScrimBotAutoMethods {
         // Implement logic to release the preloaded sample, e.g., moving an arm or servo
         // This is just an example and may vary based on your robot's design
         sideToSideServo.setPosition(1.0); // Example position to release
-        if (timer.milliseconds() >= 2000) { // can be changed
+        if (timer.milliseconds() >= 2000) { // it can be changed
             sideToSideServo.setPosition(0.0); // Reset position
         }
     }
