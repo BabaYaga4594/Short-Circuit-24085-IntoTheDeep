@@ -118,7 +118,7 @@ public class ScrimBotAutoMethods {
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void moveArmSlide(double power, int encoder, String direction) {
+    public void extendArmSlide(double power, int encoder, String direction) {
         armSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armSlide.setPower(power);
         // change encoder value
@@ -133,7 +133,7 @@ public class ScrimBotAutoMethods {
         armSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void driveForward(double inches, String direction) {
+    public void drive(double inches, String direction) {
         int targetTicks = (int) (inches * TICKS_PER_INCH);
         resetEncoders();
         if (direction == "FORWARD") {
@@ -168,8 +168,16 @@ public class ScrimBotAutoMethods {
         while (frontLeft.isBusy() && frontRight.isBusy() && backLeft.isBusy() && backRight.isBusy()) {
             // Wait until all motors reach their target position
         }
+    }
 
-        stopMotors();
+    public void releaseSampleSideToSideServo() {
+        timer.reset();
+        // Implement logic to release the preloaded sample, e.g., moving an arm or servo
+        // This is just an example and may vary based on your robot's design
+        sideToSideServo.setPosition(1.0); // Example position to release
+        if (timer.milliseconds() >= 2000) { // can be changed
+            sideToSideServo.setPosition(0.0); // Reset position
+        }
     }
 
 }
