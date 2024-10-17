@@ -180,4 +180,11 @@ public class ScrimBotAutoMethods {
         }
     }
 
+    public void updateAutoTelemetry() {
+        int frontLeftPosition = frontLeft.getCurrentPosition();
+        int frontRightPosition = frontRight.getCurrentPosition();
+        int backLeftPosition = backLeft.getCurrentPosition();
+        int backRightPosition = backRight.getCurrentPosition();
+    }
+
 }
