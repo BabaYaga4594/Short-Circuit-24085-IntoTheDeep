@@ -108,11 +108,13 @@ public class ScrimmageBotTeleOp extends OpMode {
         //arm motor
         while (gamepad1.dpad_up) {
             armSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             armMotor.setTargetPosition(100);
             armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
         while (gamepad1.dpad_down) {
             armSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             armMotor.setTargetPosition(-100);
             armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
