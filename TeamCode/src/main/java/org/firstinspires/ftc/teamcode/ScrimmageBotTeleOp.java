@@ -30,11 +30,12 @@ public class ScrimmageBotTeleOp extends OpMode {
         backRight = hardwareMap.get(DcMotor.class, "backRight");
 
         // find the name on driver hub for this
-        armSlide = hardwareMap.get(DcMotor.class, "arm slide");
+        armSlide = hardwareMap.get(DcMotor.class, "armSlide");
+        armMotor = hardwareMap.get(DcMotor.class, "armMotor");
 
         // get some names on the driver hub for this
         intakeServo = hardwareMap.get(CRServo.class, "intakeServo");
-        wristServo = hardwareMap.get(Servo.class, "sidetoSideServo");
+        wristServo = hardwareMap.get(Servo.class, "wristServo");
 
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         backRight.setDirection(DcMotorSimple.Direction.REVERSE);
