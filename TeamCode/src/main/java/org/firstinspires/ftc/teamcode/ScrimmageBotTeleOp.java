@@ -18,7 +18,9 @@ public class ScrimmageBotTeleOp extends OpMode {
     DcMotor armSlide;
     DcMotor armMotor;
     CRServo intakeServo;
-    Servo sideToSideServo;
+    Servo wristServo;
+
+    ScrimBotTeleOpPositions teleOpPositions = new ScrimBotTeleOpPositions();
 
     @Override
     public void init() {
@@ -32,12 +34,12 @@ public class ScrimmageBotTeleOp extends OpMode {
 
         // get some names on the driver hub for this
         intakeServo = hardwareMap.get(CRServo.class, "intakeServo");
-        sideToSideServo = hardwareMap.get(Servo.class, "sidetoSideServo");
+        wristServo = hardwareMap.get(Servo.class, "sidetoSideServo");
 
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         backRight.setDirection(DcMotorSimple.Direction.REVERSE);
         armSlide.setDirection(DcMotorSimple.Direction.FORWARD);
-        sideToSideServo.setDirection(Servo.Direction.FORWARD);
+        wristServo.setDirection(Servo.Direction.FORWARD);
         armMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -45,6 +47,11 @@ public class ScrimmageBotTeleOp extends OpMode {
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
     }
 
@@ -77,6 +84,17 @@ public class ScrimmageBotTeleOp extends OpMode {
             armSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
 
+        //arm slide buttons
+        if (gamepad2.y) {
+            armMotor.setTargetPosition(teleOpPositions.armSlideHighBasketScoreTicks);
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+
+        if (gamepad2.a) {
+            armMotor.setTargetPosition(-teleOpPositions.armSlideHighBasketScoreTicks);
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+
         //arm motor
         while (gamepad1.dpad_up) {
             armMotor.setTargetPosition(100);
@@ -87,16 +105,36 @@ public class ScrimmageBotTeleOp extends OpMode {
             armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
 
+        // arm motor buttons
+        if (gamepad2.x) {
+            armMotor.setTargetPosition(teleOpPositions.armMotorHighBasketScoreTicks);
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+
+        if (gamepad2.y) {
+            armMotor.setTargetPosition(-teleOpPositions.armMotorHighBasketScoreTicks);
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }
+
         //side to side motor
         if (gamepad1.x) {
-            double servoPosition = sideToSideServo.getPosition();
+            double servoPosition = wristServo.getPosition();
             servoPosition += 0.05;
-            sideToSideServo.setPosition(servoPosition);
+            wristServo.setPosition(servoPosition);
         }
         if (gamepad1.b) {
-            double servoPosition = sideToSideServo.getPosition();
+            double servoPosition = wristServo.getPosition();
             servoPosition -= 0.05;
-            sideToSideServo.setPosition(servoPosition);
+            wristServo.setPosition(servoPosition);
+        }
+
+        if (gamepad2.left_bumper) {
+            wristServo.setPosition(teleOpPositions.wristServoIntakePosition);
+        }
+
+        if (gamepad2.right_bumper) {
+            wristServo.setPosition(teleOpPositions.wristServoSpecimenPosition);
         }
 
         // CRServo which is the intake servo
