@@ -33,7 +33,7 @@ public class ScrimmageBotTeleOp extends OpMode {
         armSlide = hardwareMap.get(DcMotor.class, "armSlide");
         armMotor = hardwareMap.get(DcMotor.class, "armMotor");
 
-        // get some names on the driver hub for this
+        // get some names on the driver hub for thi
         intakeServo = hardwareMap.get(CRServo.class, "intakeServo");
         wristServo = hardwareMap.get(Servo.class, "wristServo");
 
