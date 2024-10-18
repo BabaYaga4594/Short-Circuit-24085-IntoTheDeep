@@ -143,6 +143,7 @@ public class ScrimmageBotTeleOp extends OpMode {
 
         // CRServo which is the intake servo
         intakeServo.setPower(0);
+        // i
 
         while (gamepad1.y) {
             intakeServo.setPower(0.5);
