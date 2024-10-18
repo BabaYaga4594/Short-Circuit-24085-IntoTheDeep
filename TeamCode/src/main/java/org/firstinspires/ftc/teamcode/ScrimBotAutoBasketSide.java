@@ -28,6 +28,7 @@ public class ScrimBotAutoBasketSide extends OpMode {
     public void init() {
         auto.resetEncoders();
         auto.init(hardwareMap);
+        auto.setZeroPowerModeAsBrake();
     }
 
     @Override

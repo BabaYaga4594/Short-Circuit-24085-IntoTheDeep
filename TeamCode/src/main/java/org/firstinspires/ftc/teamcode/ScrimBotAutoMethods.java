@@ -90,6 +90,13 @@ public class ScrimBotAutoMethods {
         backRight.setTargetPosition(ticks);
     }
 
+    public void setZeroPowerModeAsBrake() {
+        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
+
     public void runIntake(double time, String direction) {
         timer.reset();
         if (direction == "IN") {
@@ -178,6 +185,40 @@ public class ScrimBotAutoMethods {
         if (timer.milliseconds() >= 2000) { // it can be changed
             sideToSideServo.setPosition(0.0); // Reset position
         }
+    }
+
+    public void turn(double degrees, String direction) {
+        int turnEncoders = (int)Math.round(degrees);
+        if (direction == "lEFT") {
+            resetEncoders();
+            frontLeft.setPower(-0.5);
+            frontRight.setPower(0.5);
+            backLeft.setPower(-0.5);
+            backRight.setPower(0.5);
+            frontLeft.setTargetPosition(turnEncoders);
+            frontRight.setTargetPosition(turnEncoders);
+            backLeft.setTargetPosition(turnEncoders);
+            backRight.setTargetPosition(turnEncoders);
+            frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        } else if (direction == "RIGHT") {
+            resetEncoders();
+            frontLeft.setPower(0.5);
+            frontRight.setPower(-0.5);
+            backLeft.setPower(0.5);
+            backRight.setPower(-0.5);
+            frontLeft.setTargetPosition(turnEncoders);
+            frontRight.setTargetPosition(turnEncoders);
+            backLeft.setTargetPosition(turnEncoders);
+            backRight.setTargetPosition(turnEncoders);
+            frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+
     }
 
     public void updateAutoTelemetry() {
