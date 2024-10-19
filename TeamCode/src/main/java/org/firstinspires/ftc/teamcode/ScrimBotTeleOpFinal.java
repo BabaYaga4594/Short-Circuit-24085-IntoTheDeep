@@ -88,6 +88,7 @@ public class ScrimBotTeleOpFinal extends OpMode {
     public void moveIntakeServo () {
         if (gamepad1.a) {
             intakeServo.setPower(INTAKE_COLLECT);
+            telemetry.addLine("yuh");
         }
         else if (gamepad1.x) {
             intakeServo.setPower(INTAKE_OFF);
@@ -117,6 +118,7 @@ public class ScrimBotTeleOpFinal extends OpMode {
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 // jk
+        intakeServo.setDirection(DcMotorSimple.Direction.FORWARD);
         intakeServo.setPower(INTAKE_OFF);
         armSlide.setDirection(DcMotorSimple.Direction.REVERSE);
 

@@ -1,21 +1,23 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
+@TeleOp(name = "wristServoZero")
 public class ZeroServos extends OpMode {
 
-    Servo claw;
-    Servo armServo;
+    //Servo claw;
+    Servo wristServo;
 
     @Override
     public void init() {
 
-        armServo = hardwareMap.get(Servo.class, "claw");
-        claw = hardwareMap.get(Servo.class, "armServo");
+        wristServo = hardwareMap.get(Servo.class, "wristServo");
+        //claw = hardwareMap.get(Servo.class, "armServo");
 
-        armServo.setPosition(0);
-        claw.setPosition(0);
+        wristServo.setPosition(0);
+        //claw.setPosition(0);
 
     }
 
