@@ -6,10 +6,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "ScrimmageBot")
 public class ScrimmageBotTeleOp extends OpMode {
     double drive, turn, strafe, servoPosition;
+    ElapsedTime timer = new ElapsedTime();
     double flpower, frpower, blpower, brpower;
     DcMotor frontLeft;
     DcMotor frontRight;
@@ -88,51 +90,75 @@ public class ScrimmageBotTeleOp extends OpMode {
 
         if (gamepad2.dpad_up) {
             armSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             armSlide.setTargetPosition(100);
             armSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armSlide.setPower(0.5);
+            if (timer.milliseconds() >= 3000) {
+                armSlide.setPower(0.0);
+            }
+            armSlide.setPower(0);
         }
         else if (gamepad2.dpad_down) {
             armSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             armSlide.setTargetPosition(-100);
             armSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armSlide.setPower(0.5);
+            if (timer.milliseconds() >= 3000) {
+                armSlide.setPower(0.0);
+            }
+            armSlide.setPower(0);
         }
 
         //arm slide buttons
-        if (gamepad2.y) {
-            armMotor.setTargetPosition(teleOpPositions.armSlideHighBasketScoreTicks);
-            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        }
+        //if (gamepad2.y) {
+        //    armMotor.setTargetPosition(teleOpPositions.armSlideHighBasketScoreTicks);
+        //    armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //}
 
-        if (gamepad2.a) {
-            armMotor.setTargetPosition(-teleOpPositions.armSlideHighBasketScoreTicks);
-            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        }
+        //if (gamepad2.a) {
+        //    armMotor.setTargetPosition(-teleOpPositions.armSlideHighBasketScoreTicks);
+        //    armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //}
 
         //arm motor
         while (gamepad1.dpad_up) {
-            armSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            timer.reset();
+            armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             armMotor.setTargetPosition(100);
             armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armMotor.setPower(0.5);
+            if (timer.milliseconds() >= 3000) {
+                armMotor.setPower(0.0);
+            }
+            armMotor.setPower(0);
         }
         while (gamepad1.dpad_down) {
-            armSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            timer.reset();
+            armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             armMotor.setTargetPosition(-100);
             armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armMotor.setPower(0.5);
+            if (timer.milliseconds() >= 3000) {
+                armMotor.setPower(0.0);
+            }
+            armMotor.setPower(0);
         }
 
         // arm motor buttons
-        if (gamepad2.x) {
-            armMotor.setTargetPosition(teleOpPositions.armMotorHighBasketScoreTicks);
-            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        }
+        //if (gamepad2.x) {
+        //    armMotor.setTargetPosition(teleOpPositions.armMotorHighBasketScoreTicks);
+        //    armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //}
 
-        if (gamepad2.y) {
-            armMotor.setTargetPosition(-teleOpPositions.armMotorHighBasketScoreTicks);
-            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        }
+        //if (gamepad2.y) {
+        //    armMotor.setTargetPosition(-teleOpPositions.armMotorHighBasketScoreTicks);
+        //    armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //    armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //}
 
         //side to side motor
         if (gamepad1.x) {
@@ -146,30 +172,36 @@ public class ScrimmageBotTeleOp extends OpMode {
             wristServo.setPosition(servoPosition);
         }
 
-        if (gamepad2.left_bumper) {
-            wristServo.setPosition(teleOpPositions.wristServoIntakePosition);
-        }
+        //if (gamepad2.left_bumper) {
+        //    wristServo.setPosition(teleOpPositions.wristServoIntakePosition);
+        //}
 
-        if (gamepad2.right_bumper) {
-            wristServo.setPosition(teleOpPositions.wristServoSpecimenPosition);
-        }
+        //if (gamepad2.right_bumper) {
+        //    wristServo.setPosition(teleOpPositions.wristServoSpecimenPosition);
+        //}
 
         // CRServo which is the intake servo
-        intakeServo.setPower(0);
+        //intakeServo.setPower(0);
         // i
 
         while (gamepad1.y) {
             intakeServo.setPower(0.5);
         }
+        if (gamepad1.y == false) {
+            intakeServo.setPower(0);
+        }
         while (gamepad1.a) {
             intakeServo.setPower(-0.5);
+        }
+        if (gamepad1.a == false) {
+            intakeServo.setPower(0);
         }
 
     }
 
     public double[] scalePowers(double flpower, double frpower, double blpower, double brpower){
         double max = Math.max(Math.abs(flpower), Math.max(Math.abs(frpower), Math.max(Math.abs(blpower),Math.abs(brpower))));
-        if(max > 1){
+        if(max > 0.8){
             flpower /= max;
             frpower /= max;
             blpower /= max;
