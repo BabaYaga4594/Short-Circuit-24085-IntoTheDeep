@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name = "ScrimBotTeleOp2")
+@TeleOp(name = "ScrimBotTeleOp3")
 public class ScrimBotTeleOp3 extends OpMode {
 
     DcMotor frontRight;
@@ -19,6 +19,9 @@ public class ScrimBotTeleOp3 extends OpMode {
     CRServo intakeServo;
     Servo wristServo;
     ElapsedTime timer = new ElapsedTime();
+    final double INTAKE_COLLECT    = -1.0;
+    final double INTAKE_OFF        =  0.0;
+    final double INTAKE_DEPOSIT    =  0.5;
 
     public void driveMechanum(double left_y, double left_x, double right_x){
         double maxPower = Math.max(Math.abs(left_y) + Math.abs(left_x) + Math.abs(right_x), 1);
