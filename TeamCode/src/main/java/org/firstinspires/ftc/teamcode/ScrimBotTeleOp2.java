@@ -53,6 +53,7 @@ public class ScrimBotTeleOp2 extends OpMode {
 
         armMotor.setTargetPosition(400);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armMotor.setPower(0.5);
         if (timer.milliseconds() >= 3000) {
             armMotor.setPower(0);
         }
