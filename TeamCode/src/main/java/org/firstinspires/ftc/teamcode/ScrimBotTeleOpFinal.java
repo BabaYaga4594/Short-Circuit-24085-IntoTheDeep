@@ -10,8 +10,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name = "TeleOpMain")
-
+@TeleOp(name = "ScrimBotTeleOpFinal")
 public class ScrimBotTeleOpFinal extends OpMode {
 
     DcMotor frontRight;
