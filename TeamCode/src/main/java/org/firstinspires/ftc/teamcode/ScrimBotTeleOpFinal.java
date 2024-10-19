@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "ScrimBotTeleOpFinal")
@@ -108,6 +109,10 @@ public class ScrimBotTeleOpFinal extends OpMode {
 
         intakeServo = hardwareMap.get(CRServo.class, "intakeServo");
         wristServo = hardwareMap.get(Servo.class, "wristServo");
+
+        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
