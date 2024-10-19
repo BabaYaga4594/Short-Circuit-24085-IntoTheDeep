@@ -9,14 +9,13 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "ScrimBotTeleOp2")
-public class ScrimBotTeleOp2 extends OpMode {
+public class ScrimBotTeleOp3 extends OpMode {
 
     DcMotor frontRight;
     DcMotor frontLeft;
     DcMotor backLeft;
     DcMotor backRight;
     DcMotor armSlide;
-    DcMotor armMotor;
     CRServo intakeServo;
     Servo wristServo;
     ElapsedTime timer = new ElapsedTime();
@@ -40,7 +39,6 @@ public class ScrimBotTeleOp2 extends OpMode {
         backRight.setDirection(DcMotorSimple.Direction.REVERSE);
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         armSlide = hardwareMap.get(DcMotor.class, "armSlide");
-        armMotor = hardwareMap.get(DcMotor.class, "armMotor");
 
         intakeServo = hardwareMap.get(CRServo.class, "intakeServo");
         wristServo = hardwareMap.get(Servo.class, "wristServo");
@@ -50,20 +48,12 @@ public class ScrimBotTeleOp2 extends OpMode {
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        armMotor.setTargetPosition(400);
-        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armMotor.setPower(0.5);
-        if (timer.milliseconds() >= 3000) {
-            armMotor.setPower(0);
-        }
     }
 
     @Override
     public void loop() {
         driveMechanum(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
-
         // arm slide
         if (gamepad2.dpad_up) {
             int oldPosition = armSlide.getCurrentPosition();
@@ -84,26 +74,7 @@ public class ScrimBotTeleOp2 extends OpMode {
         }
 
         // arm motor
-        while (gamepad1.dpad_up) {
-            timer.reset();
-            int oldPosition = armMotor.getCurrentPosition();
-            armMotor.setTargetPosition(oldPosition + 100);
-            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            armMotor.setPower(0.5);
-            if (timer.milliseconds() >= 3000) {
-                armMotor.setPower(0.0);
-            }
-        }
-        while (gamepad1.dpad_down) {
-            timer.reset();
-            int oldPosition = armSlide.getCurrentPosition();
-            armMotor.setTargetPosition(oldPosition - 100);
-            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            armMotor.setPower(0.5);
-            if (timer.milliseconds() >= 3000) {
-                armMotor.setPower(0.0);
-            }
-        }
+
 
         if (gamepad1.x) {
             double servoPosition = wristServo.getPosition();
