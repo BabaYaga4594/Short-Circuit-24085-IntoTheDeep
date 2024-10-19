@@ -4,11 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "ScrimBotTeleOpFinal")
 public class ScrimBotTeleOpFinal extends OpMode {
@@ -21,36 +17,14 @@ public class ScrimBotTeleOpFinal extends OpMode {
     DcMotor armMotor;
     CRServo intakeServo;
     Servo wristServo;
-    ElapsedTime timer = new ElapsedTime();
-    final double ARM_TICKS_PER_DEGREE =
-            28 // number of encoder ticks per rotation of the bare motor
-                    * 250047.0 / 4913.0 // This is the exact gear ratio of the 50.9:1 Yellow Jacket gearbox
-                    * 100.0 / 20.0 // This is the external gear reduction, a 20T pinion gear that drives a 100T hub-mount gear
-                    * 1/360.0; // we want ticks per degree, not per rotation
-
-    final double ARM_COLLAPSED_INTO_ROBOT  = 0;
-    final double ARM_COLLECT               = 250 * ARM_TICKS_PER_DEGREE;
-    final double ARM_CLEAR_BARRIER         = 230 * ARM_TICKS_PER_DEGREE;
-    final double ARM_SCORE_SPECIMEN        = 160 * ARM_TICKS_PER_DEGREE;
-    final double ARM_SCORE_SAMPLE_IN_LOW   = 160 * ARM_TICKS_PER_DEGREE;
-    final double ARM_ATTACH_HANGING_HOOK   = 120 * ARM_TICKS_PER_DEGREE;
-    final double ARM_WINCH_ROBOT           = 15  * ARM_TICKS_PER_DEGREE;
 
     /* Variables to store the speed the intake servo should be set at to intake, and deposit game elements. */
     final double INTAKE_COLLECT    = -1.0;
     final double INTAKE_OFF        =  0.0;
     final double INTAKE_DEPOSIT    =  0.5;
 
-    /* Variables to store the positions that the wrist should be set to when folding in, or folding out. */
-    final double WRIST_FOLDED_IN   = 0.8333;
-    final double WRIST_FOLDED_OUT  = 0.5;
-
-    /* A number in degrees that the triggers can adjust the arm position by */
-    final double FUDGE_FACTOR = 15 * ARM_TICKS_PER_DEGREE;
-
-    /* Variables that are used to set the arm to a specific position */
-    double armPosition = (int)ARM_COLLAPSED_INTO_ROBOT;
-    double armPositionFudgeFactor;
+    final double WRIST_ON_SIDE = 0.8333;
+    final double WRIST_EXTENDING_OUT = 0.5;
 
     private final int TICK_INCREMENT = 100;  // Adjust as needed
 
@@ -87,7 +61,7 @@ public class ScrimBotTeleOpFinal extends OpMode {
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         intakeServo.setPower(INTAKE_OFF);
-        wristServo.setPosition(WRIST_FOLDED_IN);
+        wristServo.setPosition(WRIST_ON_SIDE);
 
         armSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -101,6 +75,28 @@ public class ScrimBotTeleOpFinal extends OpMode {
     @Override
     public void loop() {
         driveMechanum(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+
+        //intake servo
+        if (gamepad1.a) {
+            intakeServo.setPower(INTAKE_COLLECT);
+        }
+        else if (gamepad1.x) {
+            intakeServo.setPower(INTAKE_OFF);
+        }
+        else if (gamepad1.b) {
+            intakeServo.setPower(INTAKE_DEPOSIT);
+        }
+
+        // wrist servo
+        double servoPosition = wristServo.getPosition();
+        if (gamepad1.x) {
+            servoPosition += 0.05;
+            wristServo.setPosition(servoPosition);
+        }
+        else if (gamepad1.b) {
+            servoPosition -= 0.05;
+            wristServo.setPosition(servoPosition);
+        }
 
         // arm slide
         int currentSlidePosition = armSlide.getCurrentPosition();
