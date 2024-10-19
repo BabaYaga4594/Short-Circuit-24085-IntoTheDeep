@@ -52,6 +52,13 @@ public class ScrimBotTeleOpFinal extends OpMode {
     double armPosition = (int)ARM_COLLAPSED_INTO_ROBOT;
     double armPositionFudgeFactor;
 
+    private final int EXTEND_POSITION_SLIDE = 1000;  // Change value based on your slide's range
+    private final int RETRACT_POSITION_SLIDE = 0;
+
+    // Motor power settings
+    private final double POWER_UP_SLIDE = 0.8;
+    private final double POWER_DOWN_SLIDE = -0.8;
+
     public void driveMechanum(double left_y, double left_x, double right_x){
         double maxPower = Math.max(Math.abs(left_y) + Math.abs(left_x) + Math.abs(right_x), 1);
         frontLeft.setPower((left_y + left_x + right_x) / maxPower);
@@ -77,11 +84,13 @@ public class ScrimBotTeleOpFinal extends OpMode {
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        /* Make sure that the intake is off, and the wrist is folded in. */
         intakeServo.setPower(INTAKE_OFF);
         wristServo.setPosition(WRIST_FOLDED_IN);
 
-        /* Send telemetry message to signify robot waiting */
+        armSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        armSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         telemetry.addLine("Robot Ready.");
         telemetry.update();
 
@@ -90,6 +99,23 @@ public class ScrimBotTeleOpFinal extends OpMode {
     @Override
     public void loop() {
         driveMechanum(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+
+        if (gamepad1.y) {
+            armSlide.setTargetPosition(EXTEND_POSITION_SLIDE);
+            armSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armSlide.setPower(POWER_UP_SLIDE);
+        }
+        // Retract the slide when the 'A' button is pressed
+        else if (gamepad1.a) {
+            armSlide.setTargetPosition(RETRACT_POSITION_SLIDE);
+            armSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armSlide.setPower(POWER_DOWN_SLIDE);
+        }
+        // If no button is pressed, stop the motor
+        else {
+            armSlide.setPower(0);
+            armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // Return to manual control
+        }
 
         if (gamepad1.a) {
             intakeServo.setPower(INTAKE_COLLECT);
@@ -171,6 +197,8 @@ public class ScrimBotTeleOpFinal extends OpMode {
 
         telemetry.addData("armTarget: ", armMotor.getTargetPosition());
         telemetry.addData("arm Encoder: ", armMotor.getCurrentPosition());
+        telemetry.addData("Target Position", armSlide.getTargetPosition());
+        telemetry.addData("Current Position", armSlide.getCurrentPosition());
         telemetry.update();
     }
 }
