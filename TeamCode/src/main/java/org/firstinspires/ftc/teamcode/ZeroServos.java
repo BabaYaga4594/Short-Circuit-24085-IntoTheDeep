@@ -16,13 +16,14 @@ public class ZeroServos extends OpMode {
         wristServo = hardwareMap.get(Servo.class, "wristServo");
         //claw = hardwareMap.get(Servo.class, "armServo");
 
-        wristServo.setPosition(0);
         //claw.setPosition(0);
 
     }
 
     @Override
     public void loop() {
-
+        if(gamepad1.a) {
+            wristServo.setPosition(0);
+        }
     }
 }
