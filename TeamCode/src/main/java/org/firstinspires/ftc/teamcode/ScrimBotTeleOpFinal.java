@@ -26,14 +26,11 @@ public class ScrimBotTeleOpFinal extends OpMode {
     final double WRIST_ON_SIDE = 0.8333;
     final double WRIST_EXTENDING_OUT = 0.5;
 
-    private final int TICK_INCREMENT = 100;  // Adjust as needed
+    int[] maxPositions = {4200}; // potentially 4300
 
-    // Debounce variables to avoid multiple triggers per press
-    private boolean dpadUpPressedLast = false;
-    private boolean dpadDownPressedLast = false;
+    int[] minPositions = {0};
 
-    private boolean yButtonPressedLast = false;
-    private boolean aButtonPressedLast = false;
+    double slideSpeed = 0.6;
 
     public void driveMechanum(double left_y, double left_x, double right_x){
         double maxPower = Math.max(Math.abs(left_y) + Math.abs(left_x) + Math.abs(right_x), 1);
@@ -98,45 +95,33 @@ public class ScrimBotTeleOpFinal extends OpMode {
             wristServo.setPosition(servoPosition);
         }
 
-        // arm slide
-        int currentSlidePosition = armSlide.getCurrentPosition();
-        if (gamepad2.dpad_up && !dpadUpPressedLast) {
-            currentSlidePosition += TICK_INCREMENT;
-            dpadUpPressedLast = true;
-        } else if (!gamepad2.dpad_up) {
-            dpadUpPressedLast = false;
-        }
-
-        if (gamepad2.dpad_down && !dpadDownPressedLast) {
-            currentSlidePosition -= TICK_INCREMENT;
-            dpadDownPressedLast = true;
-        } else if (!gamepad1.dpad_down) {
-            dpadDownPressedLast = false;
-        }
-
-        armSlide.setTargetPosition(currentSlidePosition);
-        armSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armSlide.setPower(0.5);
-
         // arm motor
-        int currentArmPosition = armMotor.getCurrentPosition();
-        if (gamepad1.dpad_up && !yButtonPressedLast) {
-            currentArmPosition += TICK_INCREMENT;
-            yButtonPressedLast = true;
-        } else if (!gamepad1.dpad_up) {
-            yButtonPressedLast = false;
+        int ArmPos = armMotor.getCurrentPosition();
+
+        if(gamepad2.dpad_up) {
+            ArmPos += 100;
+        }
+        else if(gamepad2.dpad_down) {
+            ArmPos -= 100;
         }
 
-        if (gamepad1.dpad_down && !aButtonPressedLast) {
-            currentArmPosition -= TICK_INCREMENT;
-            aButtonPressedLast = true;
-        } else if (!gamepad1.dpad_down) {
-            aButtonPressedLast = false;
-        }
-
-        armMotor.setTargetPosition(currentArmPosition);
+        armMotor.setTargetPosition(ArmPos);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armMotor.setPower(0.5);
+        armMotor.setPower(slideSpeed);
+
+        // arm slide
+        int slidePos = armSlide.getCurrentPosition();
+
+        if(gamepad2.y && slidePos <= maxPositions[0]) {
+            slidePos += 100;
+        }
+        else if(gamepad2.a && slidePos >= minPositions[0]) {
+            slidePos -= 100;
+        }
+
+        armSlide.setTargetPosition(slidePos);
+        armSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armSlide.setPower(slideSpeed);
 
         telemetry.addData("armTarget: ", armMotor.getTargetPosition());
         telemetry.addData("arm Encoder: ", armMotor.getCurrentPosition());
