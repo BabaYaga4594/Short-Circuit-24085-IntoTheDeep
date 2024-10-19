@@ -118,6 +118,7 @@ public class ScrimBotTeleOpFinal extends OpMode {
         armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         intakeServo.setPower(INTAKE_OFF);
+        armSlide.setDirection(DcMotorSimple.Direction.REVERSE);
 
         armSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
