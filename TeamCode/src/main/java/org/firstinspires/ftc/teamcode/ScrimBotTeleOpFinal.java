@@ -59,10 +59,10 @@ public class ScrimBotTeleOpFinal extends OpMode {
         int slidePos = armSlide.getCurrentPosition();
 
         if(gamepad2.y && slidePos <= maxPositions[0]) {
-            slidePos += 50;
+            slidePos += 200;
         }
         else if(gamepad2.a && slidePos >= minPositions[0]) {
-            slidePos -= 50;
+            slidePos -= 200;
         }
 
         armSlide.setTargetPosition(slidePos);
@@ -77,10 +77,10 @@ public class ScrimBotTeleOpFinal extends OpMode {
     public void moveWristServo() {
         double servoPosition = wristServo.getPosition();
         if (gamepad2.left_bumper) {
-            servoPosition = Math.min(1.0, servoPosition + 0.05);
+            servoPosition = Math.min(1.0, servoPosition + 0.005);
             wristServo.setPosition(servoPosition);
         } else if (gamepad2.right_bumper) {
-            servoPosition = Math.max(0.0, servoPosition - 0.05);
+            servoPosition = Math.max(0.0, servoPosition - 0.005);
             wristServo.setPosition(servoPosition);
         }
     }
