@@ -22,6 +22,7 @@ public class ScrimBotTeleOpFinal extends OpMode {
     final double INTAKE_OFF        =  0.0;
     final double INTAKE_DEPOSIT    =  0.5;
     int[] maxPositions = {2100}; // potentially something else
+
     int[] minPositions = {0};
     double slideSpeed = 0.6;
 
