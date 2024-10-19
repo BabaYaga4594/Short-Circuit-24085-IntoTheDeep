@@ -52,12 +52,14 @@ public class ScrimBotTeleOpFinal extends OpMode {
     double armPosition = (int)ARM_COLLAPSED_INTO_ROBOT;
     double armPositionFudgeFactor;
 
-    private final int EXTEND_POSITION_SLIDE = 1000;  // Change value based on your slide's range
-    private final int RETRACT_POSITION_SLIDE = 0;
+    private final int TICK_INCREMENT = 100;  // Adjust as needed
 
-    // Motor power settings
-    private final double POWER_UP_SLIDE = 0.8;
-    private final double POWER_DOWN_SLIDE = -0.8;
+    // Debounce variables to avoid multiple triggers per press
+    private boolean dpadUpPressedLast = false;
+    private boolean dpadDownPressedLast = false;
+
+    private boolean yButtonPressedLast = false;
+    private boolean aButtonPressedLast = false;
 
     public void driveMechanum(double left_y, double left_x, double right_x){
         double maxPower = Math.max(Math.abs(left_y) + Math.abs(left_x) + Math.abs(right_x), 1);
@@ -100,100 +102,45 @@ public class ScrimBotTeleOpFinal extends OpMode {
     public void loop() {
         driveMechanum(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
-        if (gamepad1.y) {
-            armSlide.setTargetPosition(EXTEND_POSITION_SLIDE);
-            armSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            armSlide.setPower(POWER_UP_SLIDE);
-        }
-        // Retract the slide when the 'A' button is pressed
-        else if (gamepad1.a) {
-            armSlide.setTargetPosition(RETRACT_POSITION_SLIDE);
-            armSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            armSlide.setPower(POWER_DOWN_SLIDE);
-        }
-        // If no button is pressed, stop the motor
-        else {
-            armSlide.setPower(0);
-            armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // Return to manual control
+        // arm slide
+        int currentSlidePosition = armSlide.getCurrentPosition();
+        if (gamepad2.dpad_up && !dpadUpPressedLast) {
+            currentSlidePosition += TICK_INCREMENT;
+            dpadUpPressedLast = true;
+        } else if (!gamepad2.dpad_up) {
+            dpadUpPressedLast = false;
         }
 
-        if (gamepad1.a) {
-            intakeServo.setPower(INTAKE_COLLECT);
-        }
-        else if (gamepad1.x) {
-            intakeServo.setPower(INTAKE_OFF);
-        }
-        else if (gamepad1.b) {
-            intakeServo.setPower(INTAKE_DEPOSIT);
+        if (gamepad2.dpad_down && !dpadDownPressedLast) {
+            currentSlidePosition -= TICK_INCREMENT;
+            dpadDownPressedLast = true;
+        } else if (!gamepad1.dpad_down) {
+            dpadDownPressedLast = false;
         }
 
-        if(gamepad1.right_bumper){
-            /* This is the intaking/collecting arm position */
-            armPosition = ARM_COLLECT;
-            wristServo.setPosition(WRIST_FOLDED_OUT);
-            intakeServo.setPower(INTAKE_COLLECT);
+        armSlide.setTargetPosition(currentSlidePosition);
+        armSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armSlide.setPower(0.5);
+
+        // arm motor
+        int currentArmPosition = armMotor.getCurrentPosition();
+        if (gamepad1.dpad_up && !yButtonPressedLast) {
+            currentArmPosition += TICK_INCREMENT;
+            yButtonPressedLast = true;
+        } else if (!gamepad1.dpad_up) {
+            yButtonPressedLast = false;
         }
 
-        else if (gamepad1.left_bumper){
-                    /* This is about 20° up from the collecting position to clear the barrier
-                    Note here that we don't set the wrist position or the intake power when we
-                    select this "mode", this means that the intake and wrist will continue what
-                    they were doing before we clicked left bumper. */
-            armPosition = ARM_CLEAR_BARRIER;
+        if (gamepad1.dpad_down && !aButtonPressedLast) {
+            currentArmPosition -= TICK_INCREMENT;
+            aButtonPressedLast = true;
+        } else if (!gamepad1.dpad_down) {
+            aButtonPressedLast = false;
         }
 
-        else if (gamepad1.y){
-            /* This is the correct height to score the sample in the LOW BASKET */
-            armPosition = ARM_SCORE_SAMPLE_IN_LOW;
-        }
-
-        else if (gamepad1.dpad_left) {
-                    /* This turns off the intake, folds in the wrist, and moves the arm
-                    back to folded inside the robot. This is also the starting configuration */
-            armPosition = ARM_COLLAPSED_INTO_ROBOT;
-            intakeServo.setPower(INTAKE_OFF);
-            wristServo.setPosition(WRIST_FOLDED_IN);
-        }
-
-        else if (gamepad1.dpad_right){
-            /* This is the correct height to score SPECIMEN on the HIGH CHAMBER */
-            armPosition = ARM_SCORE_SPECIMEN;
-            wristServo.setPosition(WRIST_FOLDED_IN);
-        }
-
-        else if (gamepad1.dpad_up){
-            /* This sets the arm to vertical to hook onto the LOW RUNG for hanging */
-            armPosition = ARM_ATTACH_HANGING_HOOK;
-            intakeServo.setPower(INTAKE_OFF);
-            wristServo.setPosition(WRIST_FOLDED_IN);
-        }
-
-        else if (gamepad1.dpad_down){
-            /* this moves the arm down to lift the robot up once it has been hooked */
-            armPosition = ARM_WINCH_ROBOT;
-            intakeServo.setPower(INTAKE_OFF);
-            wristServo.setPosition(WRIST_FOLDED_IN);
-        }
-
-
-            /* Here we create a "fudge factor" for the arm position.
-            This allows you to adjust (or "fudge") the arm position slightly with the gamepad triggers.
-            We want the left trigger to move the arm up, and right trigger to move the arm down.
-            So we add the right trigger's variable to the inverse of the left trigger. If you pull
-            both triggers an equal amount, they cancel and leave the arm at zero. But if one is larger
-            than the other, it "wins out". This variable is then multiplied by our FUDGE_FACTOR.
-            The FUDGE_FACTOR is the number of degrees that we can adjust the arm by with this function. */
-
-        armPositionFudgeFactor = FUDGE_FACTOR * (gamepad1.right_trigger + (-gamepad1.left_trigger));
-
-
-            /* Here we set the target position of our arm to match the variable that was selected
-            by the driver.
-            We also set the target velocity (speed) the motor runs at, and use setMode to run it.*/
-        armMotor.setTargetPosition((int) (armPosition + armPositionFudgeFactor));
-
-        ((DcMotorEx) armMotor).setVelocity(2100);
+        armMotor.setTargetPosition(currentArmPosition);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armMotor.setPower(0.5);
 
         telemetry.addData("armTarget: ", armMotor.getTargetPosition());
         telemetry.addData("arm Encoder: ", armMotor.getCurrentPosition());
