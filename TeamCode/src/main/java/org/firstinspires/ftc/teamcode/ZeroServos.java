@@ -16,7 +16,7 @@ public class ZeroServos extends OpMode {
         wristServo = hardwareMap.get(Servo.class, "wristServo");
         //claw = hardwareMap.get(Servo.class, "armServo");
 
-        //claw.setPosition(0);
+        //claw.setPosition(0)
 
     }
 
