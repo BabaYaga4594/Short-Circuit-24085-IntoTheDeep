@@ -165,5 +165,6 @@ public class ScrimBotTeleOpFinal extends OpMode {
         //telemetry.addData("Target Position", armSlide.getTargetPosition());
         //telemetry.addData("Current Position", armSlide.getCurrentPosition());
         telemetry.update();
+        telemetry.update();
     }
 }
