@@ -14,7 +14,7 @@ public class ScrimBotTeleOpFinal extends OpMode {
     DcMotor frontLeft;
     DcMotor backLeft;
     DcMotor backRight;
-    DcMotor armSlide;
+    //DcMotor armSlide;
     DcMotor armMotor;
     CRServo intakeServo;
     Servo wristServo;
@@ -49,16 +49,16 @@ public class ScrimBotTeleOpFinal extends OpMode {
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setPower(slideSpeed);
 
-        if (armSlide.getCurrentPosition() == armPos) {
-            armSlide.setPower(0);
+        if (armMotor.getCurrentPosition() == armPos) {
+            armMotor.setPower(0);
         }
 
     }
 
-    public void moveArmSlide () {
-        int slidePos = armSlide.getCurrentPosition();
+    /* public void moveArmSlide () {
+       int slidePos = armSlide.getCurrentPosition();
 
-        if(gamepad2.y && slidePos <= maxPositions[0]) {
+       if(gamepad2.y && slidePos <= maxPositions[0]) {
             slidePos += 3000;
         }
         else if(gamepad2.a && slidePos >= minPositions[0]) {
@@ -72,7 +72,7 @@ public class ScrimBotTeleOpFinal extends OpMode {
         if (armSlide.getCurrentPosition() == slidePos) {
             armSlide.setPower(0);
         }
-    }
+    } */
 
     public void moveWristServo() {
         double servoPosition = wristServo.getPosition();
@@ -106,7 +106,7 @@ public class ScrimBotTeleOpFinal extends OpMode {
         backRight = hardwareMap.get(DcMotor.class, "backRight");
 
         armMotor = hardwareMap.get(DcMotor.class, "armMotor");
-        armSlide = hardwareMap.get(DcMotor.class, "armSlide");
+        //armSlide = hardwareMap.get(DcMotor.class, "armSlide");
 
         intakeServo = hardwareMap.get(CRServo.class, "intakeServo");
         wristServo = hardwareMap.get(Servo.class, "wristServo");
@@ -116,15 +116,15 @@ public class ScrimBotTeleOpFinal extends OpMode {
         backRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 // jk
         intakeServo.setDirection(DcMotorSimple.Direction.FORWARD);
         intakeServo.setPower(INTAKE_OFF);
-        armSlide.setDirection(DcMotorSimple.Direction.REVERSE);
+        //armSlide.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        armSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        armSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //armSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //armSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -158,12 +158,12 @@ public class ScrimBotTeleOpFinal extends OpMode {
         moveIntakeServo();
         moveWristServo();
         moveArmMotor();
-        moveArmSlide();
+        //moveArmSlide();
 
         telemetry.addData("armTarget: ", armMotor.getTargetPosition());
         telemetry.addData("arm Encoder: ", armMotor.getCurrentPosition());
-        telemetry.addData("Target Position", armSlide.getTargetPosition());
-        telemetry.addData("Current Position", armSlide.getCurrentPosition());
+        //telemetry.addData("Target Position", armSlide.getTargetPosition());
+        //telemetry.addData("Current Position", armSlide.getCurrentPosition());
         telemetry.update();
     }
 }
