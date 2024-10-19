@@ -59,10 +59,10 @@ public class ScrimBotTeleOpFinal extends OpMode {
         int slidePos = armSlide.getCurrentPosition();
 
         if(gamepad2.y && slidePos <= maxPositions[0]) {
-            slidePos += 200;
+            slidePos += 3000;
         }
         else if(gamepad2.a && slidePos >= minPositions[0]) {
-            slidePos -= 200;
+            slidePos -= 3000;
         }
 
         armSlide.setTargetPosition(slidePos);
