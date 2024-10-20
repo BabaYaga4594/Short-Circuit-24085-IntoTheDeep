@@ -12,6 +12,10 @@ public class RobotHardwareFinal {
     DcMotor backLeft;
     DcMotor backRight;
 
+    // double reverse fourbar
+    DcMotor leftDR4BMotor;
+    DcMotor rightDR4BMotor;
+
     // coaxial virtual four bar
     Servo leftCoaxialFourBar;
     Servo rightCoaxialFourBar;

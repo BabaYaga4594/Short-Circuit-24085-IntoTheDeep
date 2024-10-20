@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "ScrimBotTeleOpFinal")
-public class ScrimBotTeleOpFinal extends OpMode {
+public class ScrimBotTeleOp extends OpMode {
 
     DcMotor frontRight;
     DcMotor frontLeft;

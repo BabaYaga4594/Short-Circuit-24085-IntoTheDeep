@@ -13,6 +13,17 @@ public class MecanumDrive extends OpMode {
     DcMotor backLeft;
     DcMotor backRight;
 
+    // another version
+    /* public void driveMechanum(double left_y, double left_x, double right_x){
+        double maxPower = Math.max(Math.abs(left_y) + Math.abs(left_x) + Math.abs(right_x), 1);
+        frontLeft.setPower((left_y + left_x + right_x) / maxPower);
+        frontRight.setPower((left_y - left_x - right_x) / maxPower);
+        backLeft.setPower((left_y - left_x + right_x) / maxPower);
+        backRight.setPower((left_y + left_x - right_x) / maxPower);
+    }
+    you can implement this by using driveMechanum(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+     */
+
     @Override
     public void init() {
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
