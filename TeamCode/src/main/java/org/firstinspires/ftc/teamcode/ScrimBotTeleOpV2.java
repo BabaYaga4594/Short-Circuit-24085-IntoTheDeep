@@ -111,9 +111,9 @@ public class ScrimBotTeleOpV2 extends OpMode {
         intakeServo = hardwareMap.get(CRServo.class, "intakeServo");
         wristServo = hardwareMap.get(Servo.class, "wristServo");
 
-        //frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        //backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        //backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //armSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
