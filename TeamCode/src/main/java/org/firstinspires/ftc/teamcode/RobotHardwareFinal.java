@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -17,10 +18,10 @@ public class RobotHardwareFinal {
     DcMotor rightDR4BMotor;
 
     // coaxial virtual four bar
-    Servo leftCoaxialFourBar;
-    Servo rightCoaxialFourBar;
+    Servo leftCV4BServo;
+    Servo rightCV4BServo;
     Servo rotateIntakeServo;
-    Servo intakeServo;
+    CRServo intakeServo;
 
     //Specimen
     Servo specimenServo;
@@ -30,6 +31,11 @@ public class RobotHardwareFinal {
         frontRight = hwMap.get(DcMotor.class, "frontRight");
         backLeft = hwMap.get(DcMotor.class, "backLeft");
         backRight = hwMap.get(DcMotor.class, "backRight");
+
+        leftCV4BServo = hwMap.get(Servo.class, "leftCV4BServo");
+        rightCV4BServo = hwMap.get(Servo.class, "rightCV4BServo");
+        rotateIntakeServo = hwMap.get(Servo.class, "rotateIntakeServo");
+
     }
 
 }

@@ -8,22 +8,28 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class ZeroServos extends OpMode {
 
     //Servo claw;
-    Servo wristServo;
+    Servo Servo1;
+    Servo Servo2;
+    Servo Servo3;
 
     @Override
     public void init() {
 
-        wristServo = hardwareMap.get(Servo.class, "wristServo");
-        //claw = hardwareMap.get(Servo.class, "armServo");
+        Servo1 = hardwareMap.get(Servo.class, "leftCV4BServo");
+        Servo2 = hardwareMap.get(Servo.class, "rightCV4BServo");
+        Servo3 = hardwareMap.get(Servo.class, "rotateIntakeServo");
 
-        //claw.setPosition(0)
-        wristServo.setPosition(0);
+        Servo1.setPosition(0);
+        Servo2.setPosition(0);
+        Servo3.setPosition(0);
     }
 
     @Override
     public void loop() {
         if(gamepad1.a) {
-            wristServo.setPosition(0);
+            Servo1.setPosition(0);
+            Servo2.setPosition(0);
+            Servo3.setPosition(0);
         }
     }
 }
