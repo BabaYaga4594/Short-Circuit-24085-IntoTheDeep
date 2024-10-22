@@ -86,14 +86,14 @@ public class ScrimBotTeleOp extends OpMode {
     }
 
     public void moveIntakeServo () {
-        if (gamepad1.a) {
+        if (gamepad2.a) {
             intakeServo.setPower(INTAKE_COLLECT);
             telemetry.addLine("yuh");
         }
-        else if (gamepad1.x) {
+        else if (gamepad2.x) {
             intakeServo.setPower(INTAKE_OFF);
         }
-        else if (gamepad1.b) {
+        else if (gamepad2.b) {
             intakeServo.setPower(INTAKE_DEPOSIT);
         }
     }
