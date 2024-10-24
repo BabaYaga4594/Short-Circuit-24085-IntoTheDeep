@@ -71,6 +71,11 @@ public class ScrimBotTeleOpFieldCentric extends OpMode {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
 
+        armMotor = hardwareMap.get(DcMotor.class, "armMotor");
+        //armSlide = hardwareMap.get(DcMotor.class, "armSlide");
+
+        intakeServo = hardwareMap.get(CRServo.class, "intakeServo");
+
         // Set motor directions
         frontLeft.setDirection(DcMotor.Direction.FORWARD);  // Front left stays forward
         frontRight.setDirection(DcMotor.Direction.REVERSE); // Reverse direction for front right
