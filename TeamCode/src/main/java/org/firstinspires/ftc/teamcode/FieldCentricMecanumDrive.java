@@ -1,10 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BHI260IMU;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.BHI260IMU;
+import com.qualcomm.robotcore.hardware.IMU;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -15,7 +19,7 @@ public class FieldCentricMecanumDrive extends OpMode {
 
     // Declare hardware variables
     private DcMotor frontLeft, frontRight, backLeft, backRight;
-    private BNO055IMU imu;
+    private BHI260IMU imu;
     private Orientation angles;
 
     @Override
@@ -33,9 +37,13 @@ public class FieldCentricMecanumDrive extends OpMode {
         backRight.setDirection(DcMotor.Direction.REVERSE);  // Reverse direction for back right
 
         // Initialize IMU
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        BHI260IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD
+        ));
+
+//         = BHI260IMU.AngleUnit.DEGREES;
+        imu = hardwareMap.get(BHI260IMU.class, "imu");
         imu.initialize(parameters);
     }
 
@@ -47,7 +55,7 @@ public class FieldCentricMecanumDrive extends OpMode {
         double rotate = gamepad1.right_stick_x;
 
         // Get the robot's heading in radians
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+        angles = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
         double robotHeading = angles.firstAngle;
 
         // Calculate field-centric x and y values
