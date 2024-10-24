@@ -11,6 +11,7 @@ public class ZeroServos extends OpMode {
     Servo Servo1;
     Servo Servo2;
     Servo Servo3;
+    Servo Servo4;
 
     @Override
     public void init() {
@@ -18,10 +19,12 @@ public class ZeroServos extends OpMode {
         Servo1 = hardwareMap.get(Servo.class, "leftCV4BServo");
         Servo2 = hardwareMap.get(Servo.class, "rightCV4BServo");
         Servo3 = hardwareMap.get(Servo.class, "rotateIntakeServo");
+        Servo4 = hardwareMap.get(Servo.class, "specimenServo");
 
         Servo1.setPosition(0);
         Servo2.setPosition(0);
         Servo3.setPosition(0);
+        Servo4.setPosition(0);
     }
 
     @Override
@@ -30,6 +33,7 @@ public class ZeroServos extends OpMode {
             Servo1.setPosition(0);
             Servo2.setPosition(0);
             Servo3.setPosition(0);
+            Servo4.setPosition(0);
         }
     }
 }

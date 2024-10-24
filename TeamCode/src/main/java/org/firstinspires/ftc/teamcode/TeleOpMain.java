@@ -122,6 +122,63 @@ public class TeleOpMain extends OpMode {
 
     }
 
+    public void moveCV4BMotors() {
+        double leftCV4BServoPos = robotHw.leftCV4BServo.getPosition();
+        double rightCV4BServoPos = robotHw.rightCV4BServo.getPosition();
+
+        if (gamepad2.x) {
+            if (leftCV4BServoPos + 0.05 >= 1 && rightCV4BServoPos + 0.05 >= 1) {
+                leftCV4BServoPos = 1;
+                rightCV4BServoPos = 1;
+            } else {
+                leftCV4BServoPos += 0.05;
+                rightCV4BServoPos += 0.05;
+            }
+        } else if (gamepad2.b) {
+            if (leftCV4BServoPos - 0.05 <= 0 && rightCV4BServoPos - 0.05 <= 0) {
+                leftCV4BServoPos = 0;
+                rightCV4BServoPos = 0;
+            } else {
+                leftCV4BServoPos -= 0.05;
+                rightCV4BServoPos -= 0.05;
+            }
+        }
+
+        robotHw.leftCV4BServo.setPosition(leftCV4BServoPos);
+        robotHw.rightCV4BServo.setPosition(rightCV4BServoPos);
+    }
+
+    public void rotateIntakeServo() {
+        double rotateIntakeServoPos = robotHw.rotateIntakeServo.getPosition();
+
+        if (gamepad2.y) {
+            if (rotateIntakeServoPos + 0.05 >= 1) {
+                rotateIntakeServoPos = 1;
+            } else {
+                rotateIntakeServoPos += 0.05;
+            }
+        } else if (gamepad2.a) {
+            if (rotateIntakeServoPos - 0.05 <= 0) {
+                rotateIntakeServoPos = 0;
+            } else {
+                rotateIntakeServoPos -= 0.05;
+            }
+        }
+
+        robotHw.rotateIntakeServo.setPosition(rotateIntakeServoPos);
+    }
+
+    public void resetServos() {
+        if (gamepad2.left_trigger > 0.75) {
+            robotHw.leftCV4BServo.setPosition(0);
+            robotHw.rightCV4BServo.setPosition(0);
+
+            robotHw.rotateIntakeServo.setPosition(0);
+
+            robotHw.specimenServo.setPosition(0);
+        }
+    }
+
     @Override
     public void init() {
         robotHw.init(hardwareMap, telemetry);
@@ -131,9 +188,18 @@ public class TeleOpMain extends OpMode {
     public void loop() {
         // circuit drive for now
         circuitDrive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+
         moveIntakeServo();
+
         moveDR4BMotors();
+
         moveSpecimenServo();
+
+        moveCV4BMotors();
+
+        rotateIntakeServo();
+
+        resetServos();
 
     }
 }
