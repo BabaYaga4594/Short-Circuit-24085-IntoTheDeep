@@ -50,9 +50,10 @@ public class FieldCentricMecanumDrive extends OpMode {
     @Override
     public void loop() {
         // Get joystick values
-        double y = -gamepad1.left_stick_y; // Remember, y is reversed!
-        double x = gamepad1.left_stick_x * 1.1; // Adjust for strafing imbalance
-        double rotate = gamepad1.right_stick_x;
+        double y = gamepad1.left_stick_y; // Remember, y is reversed!
+        double x = -gamepad1.left_stick_x * 1.1; // Adjust for strafing imbalance
+        double rotate = -gamepad1.right_stick_x;
+        // changed due to robot motor configs
 
         // Get the robot's heading in radians
         angles = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
