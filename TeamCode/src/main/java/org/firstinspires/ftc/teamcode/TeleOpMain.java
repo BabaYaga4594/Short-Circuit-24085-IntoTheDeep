@@ -221,7 +221,7 @@ public class TeleOpMain extends OpMode {
 
         moveOutakeArmMotor();
 
-        //o6
+        //o67
 
     }
 }
