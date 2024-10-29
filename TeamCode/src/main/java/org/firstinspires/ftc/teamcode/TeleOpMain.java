@@ -219,5 +219,7 @@ public class TeleOpMain extends OpMode {
 
         resetServos();
 
+        moveOutakeArmMotor();
+
     }
 }
