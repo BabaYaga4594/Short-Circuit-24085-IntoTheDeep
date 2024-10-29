@@ -182,9 +182,9 @@ public class TeleOpMain extends OpMode {
     public void moveOutakeArmMotor () {
         int outakeArmMotorPos = robotHw.outakeArmMotor.getCurrentPosition();
 
-        if (gamepad2.dpad_up) {
+        if (gamepad1.dpad_up) {
             outakeArmMotorPos += 50;
-        } else if (gamepad2.dpad_down) {
+        } else if (gamepad1.dpad_down) {
             outakeArmMotorPos -= 50;
         }
 
@@ -220,8 +220,6 @@ public class TeleOpMain extends OpMode {
         resetServos();
 
         moveOutakeArmMotor();
-
-        //o67
 
     }
 }
