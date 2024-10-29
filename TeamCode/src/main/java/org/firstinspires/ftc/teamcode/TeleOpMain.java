@@ -179,6 +179,24 @@ public class TeleOpMain extends OpMode {
         }
     }
 
+    public void moveOutakeArmMotor () {
+        int outakeArmMotorPos = robotHw.outakeArmMotor.getCurrentPosition();
+
+        if (gamepad2.dpad_up) {
+            outakeArmMotorPos += 50;
+        } else if (gamepad2.dpad_down) {
+            outakeArmMotorPos -= 50;
+        }
+
+        robotHw.outakeArmMotor.setTargetPosition(outakeArmMotorPos);
+        robotHw.outakeArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robotHw.outakeArmMotor.setPower(speed);
+
+        if (robotHw.outakeArmMotor.getCurrentPosition() == outakeArmMotorPos) {
+            robotHw.outakeArmMotor.setPower(0);
+        }
+    }
+
     @Override
     public void init() {
         robotHw.init(hardwareMap, telemetry);

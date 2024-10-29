@@ -15,6 +15,7 @@ public class RobotHardware {
     DcMotor frontRight;
     DcMotor backLeft;
     DcMotor backRight;
+    DcMotor outakeArmMotor;
 
     // double reverse fourbar
     DcMotor leftDR4BMotor;
@@ -34,6 +35,8 @@ public class RobotHardware {
         frontRight = hwMap.get(DcMotor.class, "frontRight");
         backLeft = hwMap.get(DcMotor.class, "backLeft");
         backRight = hwMap.get(DcMotor.class, "backRight");
+
+        outakeArmMotor = hwMap.get(DcMotor.class, "outakeArmMotor");
 
         leftDR4BMotor = hwMap.get(DcMotor.class, "leftDR4BMotor");
         rightDR4BMotor = hwMap.get(DcMotor.class, "rightDR4BMotor");
@@ -60,6 +63,8 @@ public class RobotHardware {
         frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        outakeArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
