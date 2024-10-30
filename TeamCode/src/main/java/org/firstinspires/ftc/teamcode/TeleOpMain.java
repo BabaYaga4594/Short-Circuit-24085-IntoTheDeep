@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
@@ -72,14 +73,14 @@ public class TeleOpMain extends OpMode {
     }
 
     public void moveIntakeServo () {
-        if (gamepad2.a) {
+        if (gamepad1.a) {
             robotHw.intakeServo.setPower(INTAKE_COLLECT);
             telemetry.addLine("yuh");
         }
-        else if (gamepad2.x) {
+        else if (gamepad1.x) {
             robotHw.intakeServo.setPower(INTAKE_OFF);
         }
-        else if (gamepad2.b) {
+        else if (gamepad1.b) {
             robotHw.intakeServo.setPower(INTAKE_DEPOSIT);
         }
     }
@@ -122,26 +123,16 @@ public class TeleOpMain extends OpMode {
 
     }
 
-    public void moveCV4BMotors() {
+    public void moveCV4BServos() {
         double leftCV4BServoPos = robotHw.leftCV4BServo.getPosition();
         double rightCV4BServoPos = robotHw.rightCV4BServo.getPosition();
 
-        if (gamepad2.x) {
-            if (leftCV4BServoPos + 0.05 >= 1 && rightCV4BServoPos + 0.05 >= 1) {
-                leftCV4BServoPos = 1;
-                rightCV4BServoPos = 1;
-            } else {
-                leftCV4BServoPos += 0.05;
-                rightCV4BServoPos += 0.05;
-            }
-        } else if (gamepad2.b) {
-            if (leftCV4BServoPos - 0.05 <= 0 && rightCV4BServoPos - 0.05 <= 0) {
-                leftCV4BServoPos = 0;
-                rightCV4BServoPos = 0;
-            } else {
-                leftCV4BServoPos -= 0.05;
-                rightCV4BServoPos -= 0.05;
-            }
+        if (gamepad2.y) {
+            leftCV4BServoPos = Math.min(leftCV4BServoPos + 0.05, 1);
+            rightCV4BServoPos = Math.min(rightCV4BServoPos + 0.05, 1);
+        } else if (gamepad2.a) {
+            leftCV4BServoPos = Math.max(leftCV4BServoPos - 0.05, 0);
+            rightCV4BServoPos = Math.max(rightCV4BServoPos - 0.05, 0);
         }
 
         robotHw.leftCV4BServo.setPosition(leftCV4BServoPos);
@@ -152,17 +143,9 @@ public class TeleOpMain extends OpMode {
         double rotateIntakeServoPos = robotHw.rotateIntakeServo.getPosition();
 
         if (gamepad2.y) {
-            if (rotateIntakeServoPos + 0.05 >= 1) {
-                rotateIntakeServoPos = 1;
-            } else {
-                rotateIntakeServoPos += 0.05;
-            }
+            rotateIntakeServoPos = Math.min(rotateIntakeServoPos + 0.05, 1);
         } else if (gamepad2.a) {
-            if (rotateIntakeServoPos - 0.05 <= 0) {
-                rotateIntakeServoPos = 0;
-            } else {
-                rotateIntakeServoPos -= 0.05;
-            }
+            rotateIntakeServoPos = Math.max(rotateIntakeServoPos - 0.05, 0);
         }
 
         robotHw.rotateIntakeServo.setPosition(rotateIntakeServoPos);
@@ -182,9 +165,9 @@ public class TeleOpMain extends OpMode {
     public void moveOutakeArmMotor () {
         int outakeArmMotorPos = robotHw.outakeArmMotor.getCurrentPosition();
 
-        if (gamepad1.dpad_up) {
+        if (gamepad2.x) {
             outakeArmMotorPos += 50;
-        } else if (gamepad1.dpad_down) {
+        } else if (gamepad2.b) {
             outakeArmMotorPos -= 50;
         }
 
@@ -213,13 +196,15 @@ public class TeleOpMain extends OpMode {
 
         moveSpecimenServo();
 
-        moveCV4BMotors();
+        moveCV4BServos();
 
         rotateIntakeServo();
 
         resetServos();
 
         moveOutakeArmMotor();
+
+        robotHw.addTelemetry(telemetry);
 
     }
 }

@@ -3,10 +3,12 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class RobotHardware {
     // Later uses
@@ -30,6 +32,8 @@ public class RobotHardware {
     //Specimen
     Servo specimenServo;
 
+    DistanceSensor distanceSensor;
+
     public void init(HardwareMap hwMap, Telemetry telemetry) {
         frontLeft = hwMap.get(DcMotor.class, "frontLeft");
         frontRight = hwMap.get(DcMotor.class, "frontRight");
@@ -37,6 +41,8 @@ public class RobotHardware {
         backRight = hwMap.get(DcMotor.class, "backRight");
 
         outakeArmMotor = hwMap.get(DcMotor.class, "outakeArmMotor");
+
+        distanceSensor = hwMap.get(DistanceSensor.class, "distanceSensor");
 
         leftDR4BMotor = hwMap.get(DcMotor.class, "leftDR4BMotor");
         rightDR4BMotor = hwMap.get(DcMotor.class, "rightDR4BMotor");
@@ -78,6 +84,30 @@ public class RobotHardware {
         // o
 
         telemetry.addLine("Robot Ready.");
+        telemetry.update();
+    }
+
+    public double getDistance(DistanceUnit du){
+        return distanceSensor.getDistance(du);
+    }
+
+    public void addTelemetry(Telemetry telemetry) {
+        telemetry.addData("left DR4B motor position", leftDR4BMotor.getCurrentPosition());
+        telemetry.addData("right DR4B motor position", rightDR4BMotor.getCurrentPosition());
+
+        telemetry.addData("left CRVB motor position", leftCV4BServo.getPosition());
+        telemetry.addData("right CR4B motor position", rightCV4BServo.getPosition());
+        telemetry.addData("rotate intake servo position", rotateIntakeServo.getPosition());
+        telemetry.addData("specimen servo position", specimenServo.getPosition());
+
+        telemetry.addData("distance away from anything", getDistance(DistanceUnit.INCH));
+
+        if (getDistance(DistanceUnit.INCH) <= 3) {
+            telemetry.addLine("TOO CLOSE");
+        } else if (getDistance(DistanceUnit.INCH) <= 6) {
+            telemetry.addLine("GETTING CLOSE");
+        }
+
         telemetry.update();
     }
 
